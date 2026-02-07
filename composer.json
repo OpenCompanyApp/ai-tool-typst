@@ -1,0 +1,30 @@
+{
+    "name": "opencompanyapp/ai-tool-typst",
+    "description": "Typst document rendering AI tool for OpenCompany — generate PDF reports, invoices, proposals, and formatted documents.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "OpenCompany",
+            "homepage": "https://github.com/OpenCompanyApp"
+        }
+    ],
+    "keywords": ["laravel", "ai", "tools", "typst", "pdf", "documents", "opencompany"],
+    "require": {
+        "php": "^8.2",
+        "opencompanyapp/integration-core": "^2.0 || @dev",
+        "laravel/ai": "^0.1",
+        "illuminate/support": "^11.0 || ^12.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "OpenCompany\\AiToolTypst\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "OpenCompany\\AiToolTypst\\AiToolTypstServiceProvider"
+            ]
+        }
+    }
+}
