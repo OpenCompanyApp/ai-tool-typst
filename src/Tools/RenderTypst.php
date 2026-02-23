@@ -56,7 +56,7 @@ DESC;
     {
         $markup = trim($request['markup'] ?? '');
         if (empty($markup)) {
-            return 'Error: Typst markup is required.';
+            return 'Error: Typst markup is required. Pass your document content in the "markup" parameter.';
         }
 
         $title = $request['title'] ?? 'Document';
