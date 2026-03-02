@@ -3,14 +3,18 @@
 namespace OpenCompany\AiToolTypst\Tools;
 
 use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Illuminate\Support\Str;
 use Laravel\Ai\Contracts\Tool;
 use Laravel\Ai\Tools\Request;
 use OpenCompany\AiToolTypst\TypstService;
+use OpenCompany\IntegrationCore\Contracts\AgentFileStorage;
 
 class RenderTypst implements Tool
 {
     public function __construct(
         private TypstService $typstService,
+        private ?AgentFileStorage $fileStorage = null,
+        private ?object $agent = null,
     ) {}
 
     public function description(): string
@@ -62,6 +66,14 @@ DESC;
         $title = $request['title'] ?? 'Document';
 
         try {
+            if ($this->fileStorage && $this->agent) {
+                $bytes = $this->typstService->renderToBytes($markup);
+                $filename = Str::uuid()->toString() . '.pdf';
+                $result = $this->fileStorage->saveFile($this->agent, $filename, $bytes, 'application/pdf', 'typst');
+
+                return "![{$title}]({$result['url']})";
+            }
+
             $url = $this->typstService->render($markup);
 
             return "![{$title}]({$url})";

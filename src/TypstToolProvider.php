@@ -4,6 +4,7 @@ namespace OpenCompany\AiToolTypst;
 
 use Laravel\Ai\Contracts\Tool;
 use OpenCompany\AiToolTypst\Tools\RenderTypst;
+use OpenCompany\IntegrationCore\Contracts\AgentFileStorage;
 use OpenCompany\IntegrationCore\Contracts\ToolProvider;
 
 class TypstToolProvider implements ToolProvider
@@ -43,6 +44,12 @@ class TypstToolProvider implements ToolProvider
 
     public function createTool(string $class, array $context = []): Tool
     {
-        return new $class(app(TypstService::class));
+        $fileStorage = app()->bound(AgentFileStorage::class) ? app(AgentFileStorage::class) : null;
+
+        return new $class(
+            app(TypstService::class),
+            $fileStorage,
+            $context['agent'] ?? null,
+        );
     }
 }
